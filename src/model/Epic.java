@@ -1,6 +1,8 @@
+package model;
+
 import java.util.ArrayList;
 
-public class Epic extends Task{
+public class Epic extends Task {
     ArrayList<Integer> subTasksIds = new ArrayList<>();
 
     public Epic(String title, String description){
@@ -15,7 +17,7 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "model.Epic{" +
                 "subTasksIds=" + subTasksIds +
                 ", id=" + id +
                 ", title='" + title + '\'' +

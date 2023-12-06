@@ -1,6 +1,13 @@
+package manager;
+
+import model.Epic;
+import model.SubTask;
+import model.Task;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class TaskManager {
 
@@ -46,27 +53,18 @@ public class TaskManager {
 
 
     public ArrayList<Task> getAllTasksList(){                    //получение списков задач по типам
-        ArrayList<Task> allTasks = new ArrayList<>();
-        for (Task task : tasks.values()) {
-            allTasks.add(task);
-        }
-        return allTasks;
+
+        return new ArrayList<>(tasks.values());
     }
 
     public ArrayList<SubTask> getAllSubTasksList(){
-        ArrayList<SubTask> allSubTasks = new ArrayList<>();
-        for (SubTask subTask : subTasks.values()) {
-            allSubTasks.add(subTask);
-        }
-        return allSubTasks;
+
+        return new ArrayList<>(subTasks.values());
     }
 
     public ArrayList<Epic> getAllEpicsList(){
-        ArrayList<Epic> allEpics = new ArrayList<>();
-        for (Epic epic : epics.values()) {
-            allEpics.add(epic);
-        }
-        return allEpics;
+
+        return new ArrayList<>(epics.values());
     }
 
 
@@ -134,24 +132,26 @@ public class TaskManager {
 
     private String getStatusForEpic(ArrayList<Integer> subTaskIds){// определяем статус эпика
         String status;
-        ArrayList<String> statusList = new ArrayList<>();// создаем список статусов подзадач эпика
+        if (subTaskIds.size() == 0){
+            return "NEW";
+        }
+        HashSet<String> statusSet = new HashSet<>();// создаем сет уникальных статусов подзадач эпика
         for (Integer subTaskId : subTaskIds) {
-            statusList.add(getSubTaskById(subTaskId).getStatus()); //добавляем все статусы подзадач в список
+            statusSet.add(getSubTaskById(subTaskId).getStatus()); //добавляем уникальные статусы подзадач в сет
         }
 
-        if ((subTaskIds.size()==0) || (Collections.frequency(statusList, "NEW") == statusList.size())){
-            status = "NEW";
-        }
-        else if (Collections.frequency(statusList, "DONE") == statusList.size()) {
-            status = "DONE";
+        if (statusSet.size()==1){
+            if (statusSet.contains("NEW")){
+                status = "NEW";
+            }
+            else if(statusSet.contains("DONE")){
+                status = "DONE";
+            }
+            else status = "IN_PROGRESS";
         }
         else status = "IN_PROGRESS";
 
         return status;
     }
-
-
-
-
-    }
+}
 
