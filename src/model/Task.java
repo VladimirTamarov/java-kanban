@@ -36,7 +36,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && title.equals(task.title) && description.equals(task.description) && status.equals(task.status);
+        return id == task.id;
     }
 
     @Override
