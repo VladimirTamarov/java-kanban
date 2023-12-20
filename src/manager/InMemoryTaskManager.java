@@ -5,22 +5,22 @@ import model.Status;
 import model.SubTask;
 import model.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private  final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private  final HashMap<Integer, SubTask> subTasks = new HashMap<>();
+    private  final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
+    private  final Map<Integer, SubTask> subTasks = new HashMap<>();
     private int nextId = 1;
 
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    HistoryManager historyManager;
 
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
 
-
-@Override
+    @Override
     public int getNextId() {
         return nextId;
     }
@@ -36,7 +36,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(getNextId());
         nextId++;
 
-        ArrayList<Integer> subTaskIds = epic.getSubTasksIds();   //получаем ID сабтасков
+        List<Integer> subTaskIds = epic.getSubTasksIds();   //получаем ID сабтасков
         for (Integer subTaskId : subTaskIds) {
             getSubTaskById(subTaskId).setEpicId(epic.getId());// присваеваем каждому сабтаску принадлежность к эпику (epicId)
         }
@@ -56,17 +56,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getAllTasksList(){                    //получение списков задач по типам
+    public Collection<Task> getAllTasksList(){                    //получение списков задач по типам
 
         return new ArrayList<>(tasks.values());
     }
     @Override
-    public ArrayList<SubTask> getAllSubTasksList(){
+    public Collection<SubTask> getAllSubTasksList(){
 
         return new ArrayList<>(subTasks.values());
     }
     @Override
-    public ArrayList<Epic> getAllEpicsList(){
+    public Collection<Epic> getAllEpicsList(){
 
         return new ArrayList<>(epics.values());
     }
@@ -126,8 +126,8 @@ public class InMemoryTaskManager implements TaskManager {
         epics.remove(id);
     }
     @Override
-    public ArrayList<SubTask> getEpicSubTasks(int epicId){            //возвращаем сабтаски конкретного эпика
-        ArrayList<SubTask> subTasksByEpic = new ArrayList<>();
+    public List<SubTask> getEpicSubTasks(int epicId){            //возвращаем сабтаски конкретного эпика
+        List<SubTask> subTasksByEpic = new ArrayList<>();
         for (SubTask subTask : subTasks.values()) {
             if (subTask.getEpicId() == epicId){
                 subTasksByEpic.add(subTask);
@@ -142,7 +142,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (subTaskIds.size() == 0){
             return Status.NEW;
         }
-        HashSet<Status> statusSet = new HashSet<>();// создаем сет уникальных статусов подзадач эпика
+        Set<Status> statusSet = new HashSet<>();// создаем сет уникальных статусов подзадач эпика
         for (Integer subTaskId : subTaskIds) {
             statusSet.add(getSubTaskById(subTaskId).getStatus()); //добавляем уникальные статусы подзадач в сет
         }
