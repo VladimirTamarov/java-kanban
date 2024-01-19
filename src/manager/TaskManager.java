@@ -2,8 +2,8 @@ package manager;
 import model.Epic;
 import model.SubTask;
 import model.Task;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -52,6 +52,8 @@ public interface TaskManager {
      void removeEpicById(int id);
 
      Collection<SubTask> getEpicSubTasks(int epicId);
+
+     List<Task> getHistory();
 
 
 }

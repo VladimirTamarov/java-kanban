@@ -14,7 +14,11 @@ public class InMemoryTaskManager implements TaskManager {
     private  final Map<Integer, SubTask> subTasks = new HashMap<>();
     private int nextId = 1;
 
-    HistoryManager historyManager;
+    public HistoryManager getHistoryManager() {
+        return historyManager;
+    }
+
+    public HistoryManager historyManager = Managers.getDefaultHistory();
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
@@ -86,17 +90,17 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id){// получение задачи по ID
-           historyManager.addToHistory(tasks.get(id));
+           historyManager.add(tasks.get(id));
            return tasks.get(id);
     }
     @Override
     public SubTask getSubTaskById(int id){
-        historyManager.addToHistory(subTasks.get(id));
+        historyManager.add(subTasks.get(id));
            return subTasks.get(id);
     }
     @Override
     public Epic getEpicById(int id){
-        historyManager.addToHistory(epics.get(id));
+        historyManager.add(epics.get(id));
            return epics.get(id);
     }
 
@@ -116,14 +120,23 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeTaskById(int id) {          // удаление задачи по ID
         tasks.remove(id);
+        historyManager.remove(id);
+
+
     }
     @Override
     public void removeSubTaskById(int id){
         subTasks.remove(id);
+        historyManager.remove(id);
     }
     @Override
     public void removeEpicById(int id){
+      List<Integer> subtasksIds = getEpicById(id).getSubTasksIds();
+        for (Integer subtasksId : subtasksIds) {
+            removeSubTaskById(subtasksId);
+        }
         epics.remove(id);
+        historyManager.remove(id);
     }
     @Override
     public List<SubTask> getEpicSubTasks(int epicId){            //возвращаем сабтаски конкретного эпика
@@ -159,6 +172,10 @@ public class InMemoryTaskManager implements TaskManager {
         else status = Status.IN_PROGRESS;
 
         return status;
+    }
+@Override
+    public List<Task> getHistory(){                //получаем историю
+        return historyManager.getHistory();
     }
 
 
