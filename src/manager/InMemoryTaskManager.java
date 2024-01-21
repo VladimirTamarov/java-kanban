@@ -9,9 +9,9 @@ import java.util.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private  final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
-    private  final Map<Integer, SubTask> subTasks = new HashMap<>();
+    private final Map<Integer, SubTask> subTasks = new HashMap<>();
     private int nextId = 1;
 
     public HistoryManager getHistoryManager() {
@@ -28,15 +28,17 @@ public class InMemoryTaskManager implements TaskManager {
     public int getNextId() {
         return nextId;
     }
-@Override
-    public int create(Task task){       // создание задач, присвоение им ID
+
+    @Override
+    public int create(Task task) {       // создание задач, присвоение им ID
         task.setId(getNextId());
         nextId++;
         tasks.put(task.getId(), task);
         return task.getId();
     }
-@Override
-    public int create(Epic epic){
+
+    @Override
+    public int create(Epic epic) {
         epic.setId(getNextId());
         nextId++;
 
@@ -47,73 +49,82 @@ public class InMemoryTaskManager implements TaskManager {
 
         Status status = getStatusForEpic(epic.getSubTasksIds());  // проверяем и присваеваем статус
         epic.setStatus(status);
-        epics.put(epic.getId(),epic);
+        epics.put(epic.getId(), epic);
         return epic.getId();
 
     }
+
     @Override
-    public int create(SubTask subTask){
+    public int create(SubTask subTask) {
         subTask.setId(getNextId());
         nextId++;
-        subTasks.put(subTask.getId(),subTask);
+        subTasks.put(subTask.getId(), subTask);
         return subTask.getId();
     }
 
     @Override
-    public Collection<Task> getAllTasksList(){                    //получение списков задач по типам
+    public Collection<Task> getAllTasksList() {                    //получение списков задач по типам
 
         return new ArrayList<>(tasks.values());
     }
+
     @Override
-    public Collection<SubTask> getAllSubTasksList(){
+    public Collection<SubTask> getAllSubTasksList() {
 
         return new ArrayList<>(subTasks.values());
     }
+
     @Override
-    public Collection<Epic> getAllEpicsList(){
+    public Collection<Epic> getAllEpicsList() {
 
         return new ArrayList<>(epics.values());
     }
 
     @Override
-    public void tasksClear(){                 // удаление всех задач по типу
+    public void tasksClear() {                 // удаление всех задач по типу
         tasks.clear();
     }
+
     @Override
-    public void subTasksClear(){
+    public void subTasksClear() {
         subTasks.clear();
     }
+
     @Override
-    public void epicsClear(){
+    public void epicsClear() {
         epics.clear();
     }
 
     @Override
-    public Task getTaskById(int id){// получение задачи по ID
-           historyManager.add(tasks.get(id));
-           return tasks.get(id);
-    }
-    @Override
-    public SubTask getSubTaskById(int id){
-        historyManager.add(subTasks.get(id));
-           return subTasks.get(id);
-    }
-    @Override
-    public Epic getEpicById(int id){
-        historyManager.add(epics.get(id));
-           return epics.get(id);
+    public Task getTaskById(int id) {// получение задачи по ID
+        historyManager.add(tasks.get(id));
+        return tasks.get(id);
     }
 
     @Override
-    public void updateTask(Task task){          //обновление задачи с верным ID
+    public SubTask getSubTaskById(int id) {
+        historyManager.add(subTasks.get(id));
+        return subTasks.get(id);
+    }
+
+    @Override
+    public Epic getEpicById(int id) {
+        historyManager.add(epics.get(id));
+        return epics.get(id);
+    }
+
+    @Override
+    public void updateTask(Task task) {          //обновление задачи с верным ID
         tasks.put(task.getId(), task);
     }
+
     @Override
-    public void updateSubTask(SubTask subTask){
+    public void updateSubTask(SubTask subTask) {
         subTasks.put(subTask.getId(), subTask);
     }
+
     @Override
-    public  void updateEpic(Epic epic){
+    public void updateEpic(Epic epic) {
         epics.put(epic.getId(), epic);
     }
 
@@ -124,25 +135,28 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     }
+
     @Override
-    public void removeSubTaskById(int id){
+    public void removeSubTaskById(int id) {
         subTasks.remove(id);
         historyManager.remove(id);
     }
+
     @Override
-    public void removeEpicById(int id){
-      List<Integer> subtasksIds = getEpicById(id).getSubTasksIds();
+    public void removeEpicById(int id) {
+        List<Integer> subtasksIds = getEpicById(id).getSubTasksIds();
         for (Integer subtasksId : subtasksIds) {
             removeSubTaskById(subtasksId);
         }
         epics.remove(id);
         historyManager.remove(id);
     }
+
     @Override
-    public List<SubTask> getEpicSubTasks(int epicId){            //возвращаем сабтаски конкретного эпика
+    public List<SubTask> getEpicSubTasks(int epicId) {            //возвращаем сабтаски конкретного эпика
         List<SubTask> subTasksByEpic = new ArrayList<>();
         for (SubTask subTask : subTasks.values()) {
-            if (subTask.getEpicId() == epicId){
+            if (subTask.getEpicId() == epicId) {
                 subTasksByEpic.add(subTask);
             }
         }
@@ -150,9 +164,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     }
 
-    private Status getStatusForEpic(ArrayList<Integer> subTaskIds){// определяем статус эпика
+    private Status getStatusForEpic(ArrayList<Integer> subTaskIds) {// определяем статус эпика
         Status status;
-        if (subTaskIds.size() == 0){
+        if (subTaskIds.size() == 0) {
             return Status.NEW;
         }
         Set<Status> statusSet = new HashSet<>();// создаем сет уникальных статусов подзадач эпика
@@ -160,28 +174,21 @@ public class InMemoryTaskManager implements TaskManager {
             statusSet.add(getSubTaskById(subTaskId).getStatus()); //добавляем уникальные статусы подзадач в сет
         }
 
-        if (statusSet.size()==1){
-            if (statusSet.contains(Status.NEW)){
+        if (statusSet.size() == 1) {
+            if (statusSet.contains(Status.NEW)) {
                 status = Status.NEW;
-            }
-            else if(statusSet.contains(Status.DONE)){
+            } else if (statusSet.contains(Status.DONE)) {
                 status = Status.DONE;
-            }
-            else status = Status.IN_PROGRESS;
-        }
-        else status = Status.IN_PROGRESS;
+            } else status = Status.IN_PROGRESS;
+        } else status = Status.IN_PROGRESS;
 
         return status;
     }
-@Override
-    public List<Task> getHistory(){                //получаем историю
+
+    @Override
+    public List<Task> getHistory() {                //получаем историю
         return historyManager.getHistory();
     }
-
-
-
-
-
 
 
 }

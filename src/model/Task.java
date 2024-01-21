@@ -10,7 +10,7 @@ public class Task {
     protected Status status;
 
 
-    public  Task(){                                                // конструкторы для тестов
+    public Task() {                                                // конструкторы для тестов
 
     }
 
@@ -19,8 +19,6 @@ public class Task {
         this.description = description;
         this.status = status;
     }
-
-
 
 
     public int getId() {

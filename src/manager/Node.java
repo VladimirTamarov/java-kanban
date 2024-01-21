@@ -1,7 +1,6 @@
 package manager;
 
 
-
 public class Node<Task> {
     private model.Task task;
     private Node<Task> next;

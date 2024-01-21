@@ -1,7 +1,9 @@
 package manager;
+
 import model.Epic;
 import model.SubTask;
 import model.Task;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -12,7 +14,6 @@ public interface TaskManager {
     int create(Task task);
 
     int create(Epic epic);
-
 
 
     int create(SubTask subTask);
@@ -49,11 +50,11 @@ public interface TaskManager {
 
     void removeSubTaskById(int id);
 
-     void removeEpicById(int id);
+    void removeEpicById(int id);
 
-     Collection<SubTask> getEpicSubTasks(int epicId);
+    Collection<SubTask> getEpicSubTasks(int epicId);
 
-     List<Task> getHistory();
+    List<Task> getHistory();
 
 
 }

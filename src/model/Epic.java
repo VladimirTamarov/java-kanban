@@ -3,9 +3,9 @@ package model;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-     private ArrayList<Integer> subTasksIds = new ArrayList<>();
+    private ArrayList<Integer> subTasksIds = new ArrayList<>();
 
-    public Epic(String title, String description){
+    public Epic(String title, String description) {
         this.title = title;
         this.description = description;
     }

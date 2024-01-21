@@ -10,7 +10,7 @@ import model.Task;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager inMemoryTaskManager  = Managers.getDefault(Managers.getDefaultHistory());
+        TaskManager inMemoryTaskManager = Managers.getDefault(Managers.getDefaultHistory());
 
         Task task = new Task("Стройка дома", "Закуп материалов", Status.NEW);
         inMemoryTaskManager.create(task);
@@ -35,11 +35,10 @@ public class Main {
         epic.getSubTasksIds().add(subTask2.getId());
         epic.getSubTasksIds().add(subTask3.getId());
 
-       Epic epic2 = new Epic("Эпик без подзадач", "У этого эпика нет никаких подзадач");
+        Epic epic2 = new Epic("Эпик без подзадач", "У этого эпика нет никаких подзадач");
         inMemoryTaskManager.create(epic2);
 
         System.out.println(inMemoryTaskManager.getHistory());
-
 
 
         inMemoryTaskManager.getEpicById(6);
@@ -57,13 +56,9 @@ public class Main {
         System.out.println(inMemoryTaskManager.getHistory());
 
 
-
-
-
-
     }
 
-        }
+}
 
 
 
