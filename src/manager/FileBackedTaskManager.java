@@ -15,14 +15,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
 
     public static void main(String[] args) {
         Path path = Paths.get("test1.csv");
-        FileBackedTaskManager manager = loadFromFile(path); // для сценария с восстановлением из файла
+        /*FileBackedTaskManager manager = loadFromFile(path); // для сценария с восстановлением из файла
         System.out.println(manager.getTaskById(1));
         System.out.println(manager.getEpicById(6));
         System.out.println(manager.getHistory());
         System.out.println(manager.getTaskById(2));
-        System.out.println(manager.getHistory());
-        /*
-         Для сценария с записью в файл:
+        System.out.println(manager.getHistory());*/
+
+         //Для сценария с записью в файл:
         FileBackedTaskManager manager = new FileBackedTaskManager(path, Managers.getDefaultHistory());
         Task task = new Task("Стройка дома", "Закуп материалов", Status.NEW);
         manager.create(task);
@@ -53,7 +53,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         manager.create(epic2);
 
         manager.getTaskById(1);
-        manager.getEpicById(6);*/
+        manager.getEpicById(6);
 
 
     }
@@ -180,7 +180,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     @Override
     public Task getTaskById(int id) {
         Task task = super.getTaskById(id);
-        //save();
+        save();
         return task;
 
     }
@@ -188,14 +188,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     @Override
     public SubTask getSubTaskById(int id) {
         SubTask subTask = super.getSubTaskById(id);
-        //save();
+        save();
         return subTask;
     }
 
     @Override
     public Epic getEpicById(int id) {
         Epic epic = super.getEpicById(id);
-        //save();
+        save();
         return epic;
     }
 
