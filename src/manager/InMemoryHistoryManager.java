@@ -10,7 +10,7 @@ import java.util.Map;
 public class InMemoryHistoryManager implements HistoryManager {
     public Node<Task> head;
     public Node<Task> tail;
-    private Map<Integer, Node<Task>> tasksMap = new HashMap<>();
+    private final Map<Integer, Node<Task>> tasksMap = new HashMap<>();
 
     private Node<Task> linkLast(Task task) {
         Node<Task> oldTail = tail;

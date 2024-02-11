@@ -6,6 +6,7 @@ public class SubTask extends Task {
 
     public SubTask(String title, String description, Status status) {
         super(title, description, status);
+        this.type=Type.SUBTASK;
     }
 
     public int getEpicId() {
@@ -19,12 +20,11 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "model.SubTask{" +
-                "epicId=" + epicId +
-                ", id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return  id +","
+                + Type.SUBTASK + ","
+                + title + ","
+                + status + ","
+                + description + ","
+                + epicId;
     }
 }

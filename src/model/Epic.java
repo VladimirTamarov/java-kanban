@@ -8,6 +8,7 @@ public class Epic extends Task {
     public Epic(String title, String description) {
         this.title = title;
         this.description = description;
+        this.type = Type.EPIC;
     }
 
     public ArrayList<Integer> getSubTasksIds() {
@@ -17,12 +18,10 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "model.Epic{" +
-                "subTasksIds=" + subTasksIds +
-                ", id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return    id +","
+                + Type.EPIC + ","
+                + title + ","
+                + status + ","
+                + description;
     }
 }

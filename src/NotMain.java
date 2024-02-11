@@ -1,15 +1,6 @@
+public class NotMain {
 
-
-import manager.*;
-import model.Epic;
-import model.Status;
-import model.SubTask;
-import model.Task;
-
-
-public class Main {
-
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         TaskManager inMemoryTaskManager = Managers.getDefault(Managers.getDefaultHistory());
 
         Task task = new Task("Стройка дома", "Закуп материалов", Status.NEW);
@@ -56,7 +47,7 @@ public class Main {
         System.out.println(inMemoryTaskManager.getHistory());
 
 
-    }
+    }*/
 
 }
 

@@ -9,7 +9,7 @@ public class Task {
     protected String description;
     protected Status status;
 
-
+    protected Type type;
     public Task() {                                                // конструкторы для тестов
 
     }
@@ -18,11 +18,16 @@ public class Task {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.type = Type.TASK;
     }
 
 
     public int getId() {
         return id;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setId(int id) {
@@ -50,13 +55,14 @@ public class Task {
         this.status = status;
     }
 
+
     @Override
     public String toString() {
-        return "model.Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return  id +","
+                + Type.TASK + ","
+                + title + ","
+                + status + ","
+                + description;
+
     }
 }
