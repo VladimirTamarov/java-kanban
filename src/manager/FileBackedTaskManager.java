@@ -70,14 +70,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         super(historyManager);
     }
 
-    static FileBackedTaskManager loadFromFile(Path path) {
+    public static FileBackedTaskManager loadFromFile(Path path) {
         FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory());
 
         String content;
         try {
             content = Files.readString(path);
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка чтения данных из файла");
+            throw new ManagerLoadException("Ошибка чтения данных из файла");
         }
         String[] lines = content.split("\n");
         for (int i = 1; i < lines.length; i++) {
@@ -138,12 +138,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         StringBuilder sb = new StringBuilder();
         List<Task> list = manager.getHistory();
         for (int i = 0; i < list.size(); i++) {
-            if (i + 1 != list.size()) {
-                sb.append(list.get(i).getId()).append(",");
-            } else {
-                sb.append(list.get(i).getId());
+            sb.append(list.get(i).getId());
+            if (i+1 != list.size()){
+                sb.append(",");
             }
-
         }
         return sb.toString();
     }
