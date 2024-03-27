@@ -1,0 +1,4 @@
+id,type,name,status,description,epic
+7,EPIC,Эпик без подзадач,NEW,У этого эпика нет никаких подзадач
+1,TASK,Стройка дома,NEW,Закуп материалов
+

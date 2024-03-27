@@ -23,7 +23,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         System.out.println(manager.getHistory());*/
 
          //Для сценария с записью в файл:
-        FileBackedTaskManager manager = new FileBackedTaskManager(path, Managers.getDefaultHistory());
+        FileBackedTaskManager manager = new FileBackedTaskManager(path);
         Task task = new Task("Стройка дома", "Закуп материалов", Status.NEW);
         manager.create(task);
         Task task2 = new Task("Мытьё окон", "Помыть все окна", Status.NEW);
@@ -59,19 +59,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private Path path;
+    public HistoryManager historyManager = Managers.getDefaultHistory();
 
 
-    public FileBackedTaskManager(Path path, HistoryManager historyManager) {
-        super(historyManager);
+    public FileBackedTaskManager(Path path) {
         this.path = path;
     }
 
-    public FileBackedTaskManager(HistoryManager historyManager) {
-        super(historyManager);
-    }
+
 
     public static FileBackedTaskManager loadFromFile(Path path) {
-        FileBackedTaskManager manager = new FileBackedTaskManager(Managers.getDefaultHistory());
+        FileBackedTaskManager manager = new FileBackedTaskManager(path);
 
         String content;
         try {
@@ -234,22 +232,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     @Override
-    public void create(Task task) {
+    public int create(Task task) {
         super.create(task);
         save();
+        return task.getId();
     }
 
     @Override
-    public void create(Epic epic) {
+    public int create(Epic epic) {
         super.create(epic);
         save();
+        return epic.getId();
 
     }
 
     @Override
-    public void create(SubTask subTask) {
+    public int create(SubTask subTask) {
         super.create(subTask);
         save();
+        return subTask.getId();
 
     }
 

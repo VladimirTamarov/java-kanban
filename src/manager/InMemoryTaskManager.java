@@ -20,9 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     public HistoryManager historyManager = Managers.getDefaultHistory();
 
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
-    }
+
 
     @Override
     public int getNextId() {
@@ -30,14 +28,15 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void create(Task task) {       // создание задач, присвоение им ID
+    public int create(Task task) {       // создание задач, присвоение им ID
         task.setId(getNextId());
         nextId++;
         tasks.put(task.getId(), task);
+        return task.getId();
     }
 
     @Override
-    public void create(Epic epic) {
+    public int create(Epic epic) {
         epic.setId(getNextId());
         nextId++;
 
@@ -49,15 +48,16 @@ public class InMemoryTaskManager implements TaskManager {
         Status status = getStatusForEpic(epic.getSubTasksIds());  // проверяем и присваеваем статус
         epic.setStatus(status);
         epics.put(epic.getId(), epic);
-
+        return epic.getId();
 
     }
 
     @Override
-    public void create(SubTask subTask) {
+    public int create(SubTask subTask) {
         subTask.setId(getNextId());
         nextId++;
         subTasks.put(subTask.getId(), subTask);
+        return subTask.getId();
     }
 
     @Override

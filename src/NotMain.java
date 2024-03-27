@@ -12,7 +12,7 @@ public class NotMain {
 
     public static void main(String[] args) {
         Path path = Paths.get("test1.csv");
-        FileBackedTaskManager manager = new FileBackedTaskManager(path, Managers.getDefaultHistory());
+        FileBackedTaskManager manager = new FileBackedTaskManager(path);
 
         Task task = new Task("Стройка дома", "Закуп материалов", Status.NEW);
         manager.create(task);

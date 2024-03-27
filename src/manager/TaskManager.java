@@ -11,19 +11,19 @@ public interface TaskManager {
 
     int getNextId();
 
-    void create(Task task);
+    int create(Task task);
 
-    void create(Epic epic);
-
-
-    void create(SubTask subTask);
+    int create(Epic epic);
 
 
-    Collection<Task> getAllTasksList();
+    int create(SubTask subTask);
 
-    Collection<SubTask> getAllSubTasksList();
 
-    Collection<Epic> getAllEpicsList();
+    List<Task> getAllTasksList();
+
+    List<SubTask> getAllSubTasksList();
+
+    List<Epic> getAllEpicsList();
 
 
     void tasksClear();
