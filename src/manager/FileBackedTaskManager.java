@@ -52,19 +52,23 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         Epic epic2 = new Epic("Эпик без подзадач", "У этого эпика нет никаких подзадач");
         manager.create(epic2);
 
-        manager.getTaskById(1);
-        manager.getEpicById(6);
+
 
 
     }
 
     private Path path;
-    public HistoryManager historyManager = Managers.getDefaultHistory();
 
+    final int TITLE_SIZE = 1;    // кол-во строк, которое занимает стандартный заголовок файла данных
 
     public FileBackedTaskManager(Path path) {
         this.path = path;
+
+
     }
+
+
+
 
 
 
@@ -77,8 +81,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         } catch (IOException e) {
             throw new ManagerLoadException("Ошибка чтения данных из файла");
         }
+
         String[] lines = content.split("\n");
-        for (int i = 1; i < lines.length; i++) {
+
+        if (lines.length == manager.TITLE_SIZE){
+            return manager;
+        }
+        for (int i = manager.TITLE_SIZE; i < lines.length; i++) {
             if (lines[i].isBlank()) {
                 break;
             }
@@ -147,6 +156,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     static List<Integer> historyFromString(String value) {
         List<Integer> historyIDs = new ArrayList<>();
         String[] values = value.split(",");
+        if (values.length == 0){
+            return null;
+        }
         for (String s : values) {
             historyIDs.add(Integer.parseInt(s));
         }

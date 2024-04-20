@@ -10,7 +10,11 @@ import java.util.Map;
 public class InMemoryHistoryManager implements HistoryManager {
     public Node<Task> head;
     public Node<Task> tail;
-    private final Map<Integer, Node<Task>> tasksMap = new HashMap<>();
+    private final Map<Integer, Node<Task>> tasksMap;
+
+    public InMemoryHistoryManager(){
+        this.tasksMap = new HashMap<>();
+    }
 
     private Node<Task> linkLast(Task task) {
         Node<Task> oldTail = tail;
@@ -37,14 +41,14 @@ public class InMemoryHistoryManager implements HistoryManager {
     private List<Task> getTask() {
         List<Task> historyTaskList = new ArrayList<>();
         Node<Task> curTask = head;
-        if (curTask == null) {
+        /*if (curTask == null) {
             System.out.println("История просмотров пуста");
-        } else {
-            while (curTask != null) {
+        } else {*/
+        while (curTask != null) {
                 historyTaskList.add(curTask.getTask());
                 curTask = curTask.getNext();
             }
-        }
+
         return historyTaskList;
     }
 

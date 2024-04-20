@@ -1,9 +1,6 @@
 package manager;
-import model.Epic;
 import model.Status;
-import model.SubTask;
 import model.Task;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +35,16 @@ class InMemoryHistoryManagerTest {
         final  List<Task> history = manager.getHistory();
 
         assertEquals(0, history.size(),"История не удалилась");
+    }
+
+    @Test
+    void addDuplicatedTask(){
+        manager.add(task);
+        manager.add(task);
+        final List<Task> history = manager.getHistory();
+
+        assertNotNull(history, "История пустая");
+        assertEquals(1, history.size(), "Ошибка при добавлении одинаковой задачи в историю");
     }
 
 

@@ -30,14 +30,7 @@ public class Node<Task> {
         return prev;
     }
 
-    @Override
-    public String toString() {
-        return "Node{" +
-                "task=" + task +
-                ", next=" + next +
-                ", prev=" + prev +
-                '}';
-    }
+
 
     public Node(Node<Task> prev, model.Task task, Node<Task> next) {
         this.task = task;

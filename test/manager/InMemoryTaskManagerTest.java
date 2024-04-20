@@ -198,8 +198,11 @@ class InMemoryTaskManagerTest {
     void removeSubTaskById() {
         SubTask task = new SubTask("Стройка", "Стройка дома", Status.NEW);
         int id = manager.create(task);
+        Epic epic = new Epic("Обустройство поместья", "Обустроить загородное жилище");
+        manager.create(epic);
         List<SubTask> subTaskList = manager.getAllSubTasksList();
         assertEquals(1, subTaskList.size());
+        epic.getSubTasksIds().add(task.getId());
 
         manager.removeSubTaskById(id);
         List<SubTask> actualSubTaskList = manager.getAllSubTasksList();
@@ -230,6 +233,23 @@ class InMemoryTaskManagerTest {
         task2.setId(5);
 
         assertEquals(2, manager.getAllTasksList().size());
+    }
+
+    @Test
+    void removeSubTaskFromEpic(){
+        SubTask subTask = new SubTask("Стройка бани", "Закуп печки", Status.NEW);
+        manager.create(subTask);
+        Epic epic = new Epic("Обустройство поместья", "Обустроить загородное жилище");
+        epic.getSubTasksIds().add(subTask.getId());
+        manager.create(epic);
+
+
+
+        assertEquals(1, epic.getSubTasksIds().size());
+
+        manager.removeSubTaskById(subTask.getId());
+
+        assertEquals(0, epic.getSubTasksIds().size());
     }
 
 

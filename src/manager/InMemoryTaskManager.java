@@ -18,9 +18,15 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager;
     }
 
-    public HistoryManager historyManager = Managers.getDefaultHistory();
+    public HistoryManager historyManager;
 
+    public InMemoryTaskManager(){
+        this.historyManager = Managers.getDefaultHistory();
+    }
 
+    public InMemoryTaskManager(HistoryManager historyManager){
+        this.historyManager = historyManager;
+    }
 
     @Override
     public int getNextId() {
@@ -42,7 +48,7 @@ public class InMemoryTaskManager implements TaskManager {
 
         List<Integer> subTaskIds = epic.getSubTasksIds();   //получаем ID сабтасков
         for (Integer subTaskId : subTaskIds) {
-            getSubTaskById(subTaskId).setEpicId(epic.getId());// присваеваем каждому сабтаску принадлежность к эпику (epicId)
+            subTasks.get(subTaskId).setEpicId(epic.getId());// присваеваем каждому сабтаску принадлежность к эпику (epicId)
         }
 
         Status status = getStatusForEpic(epic.getSubTasksIds());  // проверяем и присваеваем статус
@@ -145,6 +151,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeSubTaskById(int id) {
+        SubTask subTask = subTasks.get(id);
+        Optional <Epic> mayBeEpic = Optional.ofNullable(epics.get(getEpicIdBySubtaskId(id)));// получаем эпик, к которому принадлежит данная подзадача
+        if (mayBeEpic.isPresent()){
+            Epic epic = mayBeEpic.get();
+        epic.getSubTasksIds().remove((Integer) subTask.getId());// удаляем удаляемую подзадачу из эпика
+        Status status = getStatusForEpic(epic.getSubTasksIds());  // обновляем статус эпика
+        epic.setStatus(status);}
         subTasks.remove(id);
         historyManager.remove(id);
     }
@@ -177,7 +190,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         Set<Status> statusSet = new HashSet<>();// создаем сет уникальных статусов подзадач эпика
         for (Integer subTaskId : subTaskIds) {
-            statusSet.add(getSubTaskById(subTaskId).getStatus()); //добавляем уникальные статусы подзадач в сет
+            statusSet.add(subTasks.get(subTaskId).getStatus()); //добавляем уникальные статусы подзадач в сет
         }
 
         if (statusSet.size() == 1) {
@@ -194,6 +207,10 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {                //получаем историю
         return historyManager.getHistory();
+    }
+
+    public int getEpicIdBySubtaskId(int id){
+        return subTasks.get(id).getEpicId();
     }
 
 
