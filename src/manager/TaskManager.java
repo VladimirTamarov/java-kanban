@@ -6,6 +6,7 @@ import model.Task;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -55,6 +56,10 @@ public interface TaskManager {
     Collection<SubTask> getEpicSubTasks(int epicId);
 
     List<Task> getHistory();
+
+    Set<Task> getPrioritizedTask();
+
+    boolean isOverlapInTime(Task task);
 
 
 }

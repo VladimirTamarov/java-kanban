@@ -6,35 +6,33 @@ public class Node<Task> {
     private Node<Task> next;
     private Node<Task> prev;
 
-    public model.Task getTask() {
-        return task;
+    public Node(Node<Task> prev, model.Task task, Node<Task> next) {
+        this.task = task;
+        this.next = next;
+        this.prev = prev;
     }
 
-    public Node<Task> getNext() {
-        return next;
+    public model.Task getTask() {
+        return task;
     }
 
     public void setTask(model.Task task) {
         this.task = task;
     }
 
-    public void setNext(Node<Task> next) {
-        this.next = next;
+    public Node<Task> getNext() {
+        return next;
     }
 
-    public void setPrev(Node<Task> prev) {
-        this.prev = prev;
+    public void setNext(Node<Task> next) {
+        this.next = next;
     }
 
     public Node<Task> getPrev() {
         return prev;
     }
 
-
-
-    public Node(Node<Task> prev, model.Task task, Node<Task> next) {
-        this.task = task;
-        this.next = next;
+    public void setPrev(Node<Task> prev) {
         this.prev = prev;
     }
 }
