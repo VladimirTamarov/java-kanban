@@ -53,6 +53,12 @@ public class NotMain {
         System.out.println(subTask3.getEndTime());
         System.out.println(epic);
         System.out.println(manager.getEpicSubTasks(6));
+
+        subTask.setStatus(Status.DONE);
+        manager.updateSubTask(subTask);
+        System.out.println(subTask);
+        manager.removeSubTaskById(3);
+        System.out.println(manager.getAllSubTasksList());
     }
 
 }

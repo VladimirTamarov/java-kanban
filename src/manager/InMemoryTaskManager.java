@@ -151,9 +151,12 @@ public class InMemoryTaskManager implements TaskManager {
         LocalDateTime startTime = null;
         LocalDateTime endTime = null;
         Duration duration = Duration.ofMinutes(0);
-        List<Integer> subtasksIds = epic.getSubTasksIds();
-        for (int id : subtasksIds) {
-            SubTask subTask = subTasks.get(id);
+
+        List<SubTask> epicsSubTasksList = epic.getSubTasksIds().stream()
+                .map(subTasks::get)
+                .collect(Collectors.toList());
+
+        for (SubTask subTask : epicsSubTasksList) {
             if (startTime == null || startTime.isAfter(subTask.getStartTime())) {
                 startTime = subTask.getStartTime();
             }
@@ -162,6 +165,10 @@ public class InMemoryTaskManager implements TaskManager {
             }
             duration = duration.plus(subTask.getDuration());
         }
+
+
+
+
         epic.setStartTime(startTime);
         epic.setEndTime(endTime);
         epic.setDuration(duration);
@@ -183,16 +190,24 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubTask(SubTask subTask) {
         if (subTasks.containsKey(subTask.getId())) {
             Optional<Epic> mayBeEpic = Optional.ofNullable(epics.get(getEpicIdBySubtaskId(subTask.getId())));// получаем эпик, к которому принадлежит данная подзадача
-            if (mayBeEpic.isPresent()) {
+            /*if (mayBeEpic.isPresent()) {
                 Epic epic = mayBeEpic.get();
                 Status status = getStatusForEpic(epic.getSubTasksIds());  // обновляем статус эпика
                 epic.setStatus(status);
                 setTimeAndDurationForEpic(epic);
                 if (subTask.getStartTime() != null) {
-                    prioritizedTasks.remove(tasks.get(subTask.getId()));
+                    prioritizedTasks.remove(subTasks.get(subTask.getId()));
                     prioritizedTasks.add(subTask);
                 }
-            }
+            }*/
+            mayBeEpic.ifPresent(epic -> {
+                epic.setStatus(getStatusForEpic(epic.getSubTasksIds()));
+            setTimeAndDurationForEpic(epic);
+                if (subTask.getStartTime() != null) {
+                    prioritizedTasks.remove(subTasks.get(subTask.getId()));
+                    prioritizedTasks.add(subTask);
+                }
+            });
             subTasks.put(subTask.getId(), subTask);
         }
 
@@ -218,13 +233,18 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeSubTaskById(int id) {
         SubTask subTask = subTasks.get(id);
         Optional<Epic> mayBeEpic = Optional.ofNullable(epics.get(getEpicIdBySubtaskId(id)));// получаем эпик, к которому принадлежит данная подзадача
-        if (mayBeEpic.isPresent()) {
+        /*if (mayBeEpic.isPresent()) {
             Epic epic = mayBeEpic.get();
             epic.getSubTasksIds().remove((Integer) subTask.getId());// удаляем удаляемую подзадачу из эпика
             Status status = getStatusForEpic(epic.getSubTasksIds());  // обновляем статус эпика
             epic.setStatus(status);
             setTimeAndDurationForEpic(epic);
-        }
+        }*/
+        mayBeEpic.ifPresent(epic -> {
+            epic.getSubTasksIds().remove((Integer) subTask.getId());
+            epic.setStatus(getStatusForEpic(epic.getSubTasksIds()));
+            setTimeAndDurationForEpic(epic);
+        });
         prioritizedTasks.remove(subTasks.get(id));
         subTasks.remove(id);
         historyManager.remove(id);
@@ -232,7 +252,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public boolean isOverlapInTime(Task task) {
-        for (Task curTask : prioritizedTasks) {
+        /* for (Task curTask : prioritizedTasks) {
             if (Objects.equals(task.getId(), curTask.getId())) {
                 continue;
             }
@@ -250,8 +270,16 @@ public class InMemoryTaskManager implements TaskManager {
                 break;
             }
 
-        }
-        return true;
+        }*/
+
+        return !prioritizedTasks.stream()
+                .filter(prTask -> !Objects.equals(prTask.getId(), task.getId()))
+                .filter(prTask -> prTask.getStartTime() != null)
+                .anyMatch(prTask ->
+                           prTask.getEndTime().isBefore(task.getStartTime())
+                        || prTask.getEndTime().equals(task.getStartTime())
+                        || prTask.getStartTime().isAfter(task.getEndTime())
+                        || prTask.getStartTime().equals(task.getEndTime()));
 
     }
 
