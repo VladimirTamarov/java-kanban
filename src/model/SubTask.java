@@ -4,9 +4,9 @@ public class SubTask extends Task {
 
     protected int epicId;
 
-    public SubTask(String title, String description, Status status) {
-        super(title, description, status);
-        this.type=Type.SUBTASK;
+    public SubTask(String title, String description, Status status, String startTime, long durationInMinutes) {
+        super(title, description, status, startTime, durationInMinutes);
+        this.type = Type.SUBTASK;
     }
 
     public int getEpicId() {
@@ -20,11 +20,13 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return  id +","
+        return id + ","
                 + Type.SUBTASK + ","
                 + title + ","
                 + status + ","
                 + description + ","
-                + epicId;
+                + epicId + ","
+                + startTime.format(FORMATTER) + ","
+                + duration.toMinutes();
     }
 }

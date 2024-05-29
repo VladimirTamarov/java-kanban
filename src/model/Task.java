@@ -1,37 +1,65 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
 
+    protected final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     protected int id;
     protected String title;
     protected String description;
     protected Status status;
-
+    protected Duration duration;
+    protected LocalDateTime startTime;
     protected Type type;
-    public Task() {                                                // конструкторы для тестов
+
+    public Task() {
 
     }
-
-    public Task(String title, String description, Status status) {
+    public Task(String title, String description, Status status, String startTime, long durationInMinutes) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.type = Type.TASK;
+        if (startTime != null) {
+            this.startTime = LocalDateTime.parse(startTime, FORMATTER);
+        } else this.startTime = null;
+        this.duration = Duration.ofMinutes(durationInMinutes);
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Type getType() {
         return type;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public LocalDateTime getEndTime() {
+        return startTime.plusMinutes(duration.toMinutes());
     }
 
     @Override
@@ -58,7 +86,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return  id +","
+        if (getStartTime() != null) {
+            return id + ","
+                    + Type.TASK + ","
+                    + title + ","
+                    + status + ","
+                    + description + ","
+                    + startTime.format(FORMATTER) + ","
+                    + duration.toMinutes();
+        } else return id + ","
                 + Type.TASK + ","
                 + title + ","
                 + status + ","

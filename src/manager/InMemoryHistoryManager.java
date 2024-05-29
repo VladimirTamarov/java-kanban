@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
+    private final Map<Integer, Node<Task>> tasksMap;
     public Node<Task> head;
     public Node<Task> tail;
-    private final Map<Integer, Node<Task>> tasksMap;
 
-    public InMemoryHistoryManager(){
+    public InMemoryHistoryManager() {
         this.tasksMap = new HashMap<>();
     }
 
@@ -45,9 +45,9 @@ public class InMemoryHistoryManager implements HistoryManager {
             System.out.println("История просмотров пуста");
         } else {*/
         while (curTask != null) {
-                historyTaskList.add(curTask.getTask());
-                curTask = curTask.getNext();
-            }
+            historyTaskList.add(curTask.getTask());
+            curTask = curTask.getNext();
+        }
 
         return historyTaskList;
     }
