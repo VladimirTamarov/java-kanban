@@ -1,13 +1,16 @@
 package model;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
 
 
-    private LocalDateTime endTime;
     private final ArrayList<Integer> subTasksIds = new ArrayList<>();
+    private LocalDateTime endTime;
 
     public Epic(String title, String description) {
         this.title = title;
@@ -39,5 +42,9 @@ public class Epic extends Task {
                 + title + ","
                 + status + ","
                 + description;
+    }
+
+    public static class EpicListTypeToken extends TypeToken<List<Epic>> {
+
     }
 }

@@ -1,0 +1,30 @@
+package handlers;
+
+import com.google.gson.Gson;
+import com.sun.net.httpserver.HttpExchange;
+import manager.Managers;
+import manager.TaskManager;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+public class BaseHttpHandler {
+    TaskManager taskManager;
+    Gson gson;
+
+    public BaseHttpHandler(TaskManager taskManager) {
+        this.taskManager = taskManager;
+        gson = Managers.getGson();
+    }
+
+    protected void sendText(int code, HttpExchange h, String text) throws IOException {
+        byte[] resp = text.getBytes(StandardCharsets.UTF_8);
+        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
+        h.sendResponseHeaders(code, resp.length);
+        h.getResponseBody().write(resp);
+        h.close();
+    }
+
+
+}
+

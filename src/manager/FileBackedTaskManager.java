@@ -1,5 +1,6 @@
 package manager;
 
+import exception.ManagerLoadException;
 import model.*;
 
 import java.io.FileWriter;

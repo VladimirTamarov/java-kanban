@@ -6,9 +6,18 @@ import model.Task;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface TaskManager {
+    Map<Integer, Task> getTasks();
+
+
+    Map<Integer, Epic> getEpics();
+
+    Map<Integer, SubTask> getSubTasks();
+
+    Set<Task> getPrioritizedTasks();
 
     int getNextId();
 

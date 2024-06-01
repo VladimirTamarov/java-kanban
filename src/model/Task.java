@@ -1,8 +1,11 @@
 package model;
 
+import com.google.gson.reflect.TypeToken;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 public class Task {
@@ -15,10 +18,10 @@ public class Task {
     protected Duration duration;
     protected LocalDateTime startTime;
     protected Type type;
-
     public Task() {
 
     }
+
     public Task(String title, String description, Status status, String startTime, long durationInMinutes) {
         this.title = title;
         this.description = description;
@@ -28,6 +31,14 @@ public class Task {
             this.startTime = LocalDateTime.parse(startTime, FORMATTER);
         } else this.startTime = null;
         this.duration = Duration.ofMinutes(durationInMinutes);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public Duration getDuration() {
@@ -99,6 +110,10 @@ public class Task {
                 + title + ","
                 + status + ","
                 + description;
+
+    }
+
+    public static class TaskListTypeToken extends TypeToken<List<Task>> {
 
     }
 }
