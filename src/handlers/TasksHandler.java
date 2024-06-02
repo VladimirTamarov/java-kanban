@@ -49,10 +49,10 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
             code = 200;
             System.out.println("Идёт обработка запроса /tasks");
 
-        } else if (path.contains("/tasks/") && path.split("/").length == 3) {
+        } else if (isRequestWithId(path)) {
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /tasks/" + id);
 
                 response = gson.toJson(taskManager.getTaskById(id));
@@ -92,10 +92,10 @@ public class TasksHandler extends BaseHttpHandler implements HttpHandler {
         int code;
         String response;
 
-        if (path.contains("/tasks/") && path.split("/").length == 3) {
+        if (isRequestWithId(path)) {
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /tasks/" + id);
 
                 taskManager.removeTaskById(id);

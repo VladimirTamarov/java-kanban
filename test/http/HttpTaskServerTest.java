@@ -19,11 +19,12 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static support.Library.getGson;
 
 class HttpTaskServerTest {
     HttpTaskServer server;
     TaskManager taskManager;
-    Gson gson = Managers.getGson();
+    Gson gson = getGson();
 
     HttpTaskServerTest() throws IOException {
     }

@@ -48,10 +48,10 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
             code = 200;
             System.out.println("Идёт обработка запроса /subtasks");
 
-        } else if (path.contains("/subtasks/") && path.split("/").length == 3) {
+        } else if (isRequestWithId(path)) {
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /subtasks/" + id);
 
                 response = gson.toJson(taskManager.getSubTaskById(id));
@@ -91,10 +91,10 @@ public class SubtasksHandler extends BaseHttpHandler implements HttpHandler {
         int code;
         String response;
 
-        if (path.contains("/subtasks/") && path.split("/").length == 3) {
+        if (isRequestWithId(path)) {
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /subtasks/" + id);
 
                 taskManager.removeSubTaskById(id);

@@ -49,10 +49,10 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
             code = 200;
             System.out.println("Идёт обработка запроса /epics");
 
-        } else if (path.contains("/epics/") && path.split("/").length == 3) {
+        } else if (isRequestWithId(path)) {
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /epics/" + id);
 
                 response = gson.toJson(taskManager.getEpicById(id));
@@ -65,7 +65,7 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
                 && (path.split("/")[3].equals("subtasks")))
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /epics/" + id + "/subtasks");
 
                 response = gson.toJson(taskManager.getEpicSubTasks(id));
@@ -103,10 +103,10 @@ public class EpicsHandler extends BaseHttpHandler implements HttpHandler {
         int code;
         String response;
 
-        if (path.contains("/epics/") && path.split("/").length == 3) {
+        if (isRequestWithId(path)) {
 
             try {
-                int id = Integer.parseInt(path.split("/")[2]);
+                int id = getIdFromPath(path);
                 System.out.println("Идёт обработка запроса /epics/" + id);
 
                 taskManager.removeEpicById(id);

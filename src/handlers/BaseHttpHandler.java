@@ -8,13 +8,15 @@ import manager.TaskManager;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import static support.Library.getGson;
+
 public class BaseHttpHandler {
     TaskManager taskManager;
     Gson gson;
 
     public BaseHttpHandler(TaskManager taskManager) {
         this.taskManager = taskManager;
-        gson = Managers.getGson();
+        gson = getGson();
     }
 
     protected void sendText(int code, HttpExchange h, String text) throws IOException {
@@ -23,6 +25,16 @@ public class BaseHttpHandler {
         h.sendResponseHeaders(code, resp.length);
         h.getResponseBody().write(resp);
         h.close();
+    }
+
+    public int getIdFromPath(String path){
+        int id = Integer.parseInt(path.split("/")[2]);
+        return id;
+    }
+
+    public boolean isRequestWithId(String path){
+        return (path.contains("/tasks/") || path.contains("/subtasks/") || path.contains("/epics/"))
+                && path.split("/").length == 3;
     }
 
 
