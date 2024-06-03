@@ -1,5 +1,9 @@
 package model;
 
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
 public class SubTask extends Task {
 
     protected int epicId;
@@ -28,5 +32,9 @@ public class SubTask extends Task {
                 + epicId + ","
                 + startTime.format(FORMATTER) + ","
                 + duration.toMinutes();
+    }
+
+    public static class SubTaskListTypeToken extends TypeToken<List<SubTask>> {
+
     }
 }
